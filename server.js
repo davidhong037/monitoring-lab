@@ -28,6 +28,27 @@ app.get('/rollbar', (req, res) => {
       } 
 })
 
+let soda = []
+
+app.post('/api/soda', (req, res) => {
+    let {name} = req.body
+    name = name.trim()
+
+    const index = soda.findIndex(sodaName => sodaName === name)
+
+    if(index === -1 && name !== ''){
+        soda.push(name)
+        rollbar.log('Soda added successfully', {author: 'David', type: 'manual entry'})
+        res.status(200).send(soda)
+    } else if(name === ''){
+        rollbar.error('No name given')
+        res.status(400).send('Must provide a soda name')
+    } else {
+        rollbar.critical('Soda already exists')
+        res.status(400).send("That soda already exists!")  
+    }
+})
+
 app.use(rollbar.errorHandler())
 
 const port = process.env.PORT || 4545
