@@ -16,6 +16,18 @@ app.get('/', (req, res) => {
     rollbar.info('html file served successfully')
 })
 
+app.get('/style', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/styles.css'))
+})
+
+app.get('/rollbar', (req, res) => {
+    try {
+        nonExistentFunction();
+      } catch (error) {
+        rollbar.bar.error("Not working properly");
+      } 
+})
+
 app.use(rollbar.errorHandler())
 
 const port = process.env.PORT || 4545
