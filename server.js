@@ -24,7 +24,7 @@ app.get('/rollbar', (req, res) => {
     try {
         nonExistentFunction();
       } catch (error) {
-        rollbar.bar.error("Not working properly");
+        rollbar.error("Not working properly");
       } 
 })
 
